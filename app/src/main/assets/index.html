@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="author" content="Goutam Gupta">
+    <meta name="description" content="NEO-CHESS: High-fidelity tactical simulation.">
+    <title>Neo-Chess | System v1.0</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Choice Button Styling */
+        .boot-options {
+            display: flex;
+            gap: 20px;
+        }
+        .start-choice {
+            background: transparent;
+            border: 1px solid #00f2ff;
+            color: #00f2ff;
+            padding: 12px 25px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.8rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: 0.4s;
+            box-shadow: 0 0 10px rgba(0, 242, 255, 0.2);
+        }
+        .start-choice:hover {
+            background: rgba(0, 242, 255, 0.1);
+            box-shadow: 0 0 20px #00f2ff;
+            transform: translateY(-2px);
+        }
+        .black-choice {
+            border-color: #ff00ff;
+            color: #ff00ff;
+            box-shadow: 0 0 10px rgba(255, 0, 255, 0.2);
+        }
+        .black-choice:hover {
+            background: rgba(255, 0, 255, 0.1);
+            box-shadow: 0 0 20px #ff00ff;
+        }
+    </style>
+</head>
+<body>
+
+<div id="cyber-grid"></div>
+
+<div id="overlay">
+    <h1 style="color: #00f2ff; text-shadow: 0 0 20px #00f2ff; margin-bottom: 5px;">NEO-CHESS</h1>
+    <p style="color: #00f2ff; font-family: 'Courier New', Courier, monospace; font-size: 0.7rem; letter-spacing: 2px; margin-bottom: 30px; opacity: 0.6;">
+        DEVELOPER: GOUTAM GUPTA
+    </p>
+
+    <div class="boot-options">
+        <button class="start-choice" onclick="initGame('white')">INIT: WHITE_UNIT</button>
+        <button class="start-choice black-choice" onclick="initGame('black')">INIT: BLACK_UNIT</button>
+    </div>
+</div>
+
+<div class="stats">
+    <div class="player-block">
+        <div id="p2-timer" class="timer">BLACK: 05:00</div>
+        <div id="p2-captured" class="captured-box"></div>
+    </div>
+
+    <div class="controls">
+        <div id="status">STANDBY</div>
+        <div class="button-group" id="btn-container">
+            <button id="restartBtn" onclick="resetGame()" style="display:none;">REBOOT</button>
+        </div>
+    </div>
+
+    <div class="player-block">
+        <div id="p1-timer" class="timer">WHITE: 05:00</div>
+        <div id="p1-captured" class="captured-box"></div>
+    </div>
+</div>
+
+<canvas id="board"></canvas>
+
+<div id="log-terminal">
+    <div class="log-line">> SYSTEM_BOOT: COMPLETED</div>
+    <div class="log-line">> OPERATOR_ID: GOUTAM_GUPTA</div>
+    <div class="log-line">> ACCESS_GRANTED: WELCOME</div>
+    <div class="log-line">> SELECT DEPLOYMENT UNIT TO START...</div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
