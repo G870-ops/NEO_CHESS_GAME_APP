@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "261686844580",
+    "firebase_url": "https://new-chess-24a18-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "new-chess-24a18",
+    "storage_bucket": "new-chess-24a18.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:261686844580:android:105de1b869e46d38cc1a31",
+        "android_client_info": {
+          "package_name": "com.example.neo_chess"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "261686844580-mv9m0ctotjce16tsj1m2s0a2ldrf2jcd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1Dt3Szx6-uPzZs0bNvVnrqZK-klSpZpI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "261686844580-mv9m0ctotjce16tsj1m2s0a2ldrf2jcd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

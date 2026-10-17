@@ -1,54 +1,209 @@
+/**
+ * NEO-CHESS | Stylesheet v2.0 Quantum Matrix
+ * OPERATOR / AUTHOR: GOUTAM GUPTA
+ * AUTH_ID: GOUTAM_GUPTA_V1
+ * THEME: Cyberpunk / Neural Matrix / Quantum Holo-Grid
+ * PALETTE: Dynamic CSS Variables (Neon Cyan, Magenta, Matrix Green, Solar Gold, Void Violet)
+ */
+
+/* ==============================================
+   CSS VARIABLES & FUTURISTIC THEMES
+============================================== */
+:root, [data-theme="neon"] {
+    --primary: #00f2ff;
+    --primary-glow: rgba(0, 242, 255, 0.4);
+    --secondary: #ff00ff;
+    --secondary-glow: rgba(255, 0, 255, 0.4);
+    --accent: #ff0055;
+    --accent-glow: rgba(255, 0, 85, 0.5);
+    --gold: #ffd700;
+    --bg-dark: #050508;
+    --bg-deep: #020205;
+    --card-bg: rgba(10, 10, 26, 0.78);
+    --border-color: rgba(0, 242, 255, 0.25);
+    --tile-white: #0a0a18;
+    --tile-black: #04040a;
+}
+
+[data-theme="matrix"] {
+    --primary: #00ff66;
+    --primary-glow: rgba(0, 255, 102, 0.4);
+    --secondary: #00d9ff;
+    --secondary-glow: rgba(0, 217, 255, 0.4);
+    --accent: #ffff00;
+    --accent-glow: rgba(255, 255, 0, 0.5);
+    --gold: #73ff00;
+    --bg-dark: #020a04;
+    --bg-deep: #010502;
+    --card-bg: rgba(4, 20, 10, 0.82);
+    --border-color: rgba(0, 255, 102, 0.3);
+    --tile-white: #06180c;
+    --tile-black: #020804;
+}
+
+[data-theme="solar"] {
+    --primary: #ffaa00;
+    --primary-glow: rgba(255, 170, 0, 0.45);
+    --secondary: #ff3b00;
+    --secondary-glow: rgba(255, 59, 0, 0.45);
+    --accent: #00f2ff;
+    --accent-glow: rgba(0, 242, 255, 0.5);
+    --gold: #ffe600;
+    --bg-dark: #0a0602;
+    --bg-deep: #050301;
+    --card-bg: rgba(25, 12, 4, 0.82);
+    --border-color: rgba(255, 170, 0, 0.3);
+    --tile-white: #1a0f05;
+    --tile-black: #080402;
+}
+
+[data-theme="void"] {
+    --primary: #a855f7;
+    --primary-glow: rgba(168, 85, 247, 0.45);
+    --secondary: #06b6d4;
+    --secondary-glow: rgba(6, 182, 212, 0.45);
+    --accent: #f43f5e;
+    --accent-glow: rgba(244, 63, 94, 0.5);
+    --gold: #fbbf24;
+    --bg-dark: #06020c;
+    --bg-deep: #030106;
+    --card-bg: rgba(18, 6, 32, 0.82);
+    --border-color: rgba(168, 85, 247, 0.3);
+    --tile-white: #140722;
+    --tile-black: #06020c;
+}
+
+/* ==============================================
+   GLOBAL BODY & CYBER BACKGROUND
+============================================== */
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
 body {
     margin: 0;
     padding: 0;
     width: 100vw;
-    height: 100vh;
-    background: #000;
+    min-height: 100vh;
+    background: var(--bg-dark);
     color: #fff;
-    font-family: 'Segoe UI', sans-serif;
+    font-family: 'Segoe UI', -apple-system, Roboto, sans-serif;
     display: flex;
     flex-direction: column;
     align-items: center;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
     position: relative;
+    user-select: none;
+    -webkit-user-select: none;
 
-    /* AESTHETIC BACKGROUND: Deep Space + Neon Grid */
-    background-color: #050508;
+    /* AESTHETIC BACKGROUND: Deep Space + Neon Grid Pulse */
     background-image:
-        radial-gradient(circle at 50% 50%, rgba(0, 242, 255, 0.05), transparent 70%),
-        linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%),
-        linear-gradient(90deg, rgba(0, 242, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(rgba(0, 242, 255, 0.03) 1px, transparent 1px);
+        radial-gradient(circle at 50% 50%, var(--primary-glow), transparent 70%),
+        linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+        linear-gradient(90deg, rgba(0, 242, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(rgba(0, 242, 255, 0.04) 1px, transparent 1px);
     background-size: 100% 100%, 100% 4px, 40px 40px, 40px 40px;
-    animation: backgroundPulse 10s infinite alternate;
+    animation: backgroundPulse 12s infinite alternate ease-in-out;
 }
 
 @keyframes backgroundPulse {
-    from { background-color: #050508; }
-    to { background-color: #0a0a1a; }
+    from { background-color: var(--bg-dark); }
+    to { background-color: var(--bg-deep); }
 }
 
+/* CRT Scanlines Overlay */
 body::after {
     content: " ";
-    position: absolute;
+    position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
-    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%);
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%);
     background-size: 100% 4px;
-    z-index: 999;
+    z-index: 998;
     pointer-events: none;
-    opacity: 0.2;
+    opacity: 0.22;
 }
 
-/* Header Stats Area */
+/* ==============================================
+   TOP NAV / TELEMETRY BAR
+============================================== */
+.top-nav-bar {
+    width: 100%;
+    max-width: 650px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px 4px 14px;
+    z-index: 20;
+}
+
+.sys-badge {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 1.5px;
+    color: var(--primary);
+    text-shadow: 0 0 8px var(--primary-glow);
+}
+
+.live-dot {
+    width: 7px;
+    height: 7px;
+    background: var(--primary);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--primary);
+    animation: liveBlink 1.4s infinite alternate;
+}
+
+@keyframes liveBlink {
+    0% { opacity: 0.3; transform: scale(0.85); }
+    100% { opacity: 1; transform: scale(1.15); }
+}
+
+.quick-toggles {
+    display: flex;
+    gap: 6px;
+}
+
+.pill-btn {
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid var(--border-color);
+    color: #aaa;
+    font-family: 'Courier New', monospace;
+    font-size: 0.62rem;
+    padding: 4px 8px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    letter-spacing: 0.5px;
+}
+
+.pill-btn.active, .pill-btn:hover {
+    color: var(--primary);
+    border-color: var(--primary);
+    box-shadow: 0 0 10px var(--primary-glow);
+}
+
+.pill-btn.highlight {
+    color: var(--secondary);
+    border-color: var(--secondary);
+}
+
+/* ==============================================
+   HEADER STATS & TIMERS
+============================================== */
 .stats {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     width: 100%;
     max-width: 650px;
-    padding: 20px 15px;
-    box-sizing: border-box;
+    padding: 8px 12px;
     z-index: 10;
+    gap: 8px;
 }
 
 .player-block {
@@ -56,184 +211,1484 @@ body::after {
     flex-direction: column;
     align-items: center;
     flex: 1;
+    min-width: 0;
 }
 
 .timer {
-    font-size: 1rem;
-    padding: 8px 12px;
+    font-size: 0.88rem;
+    padding: 7px 10px;
     border: 1px solid #333;
-    background: rgba(0, 0, 0, 0.85);
-    min-width: 120px;
+    background: rgba(0, 0, 0, 0.88);
+    width: 100%;
+    max-width: 150px;
     text-align: center;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     backdrop-filter: blur(10px);
     border-radius: 4px;
     letter-spacing: 1px;
-}
-
-/* REFINED: Captured Pieces Container */
-.captured-box {
-    font-size: 1.1rem;
-    height: 25px;
-    opacity: 0.8;
-    margin-top: 8px;
-    letter-spacing: 4px;
-    color: #ffd700;
-    text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+    font-family: 'Courier New', monospace;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .active-white {
-    border-color: #00f2ff;
-    color: #00f2ff !important;
-    box-shadow: 0 0 15px rgba(0, 242, 255, 0.3);
+    border-color: var(--primary);
+    color: var(--primary) !important;
+    box-shadow: 0 0 16px var(--primary-glow);
 }
 
 .active-black {
-    border-color: #ff00ff;
-    color: #ff00ff !important;
-    box-shadow: 0 0 15px rgba(255, 0, 255, 0.3);
+    border-color: var(--secondary);
+    color: var(--secondary) !important;
+    box-shadow: 0 0 16px var(--secondary-glow);
 }
 
-/* Central Controls */
+/* ==============================================
+   OVERDRIVE ENERGY CORE BAR
+============================================== */
+.core-meter {
+    width: 100%;
+    max-width: 150px;
+    height: 12px;
+    background: rgba(0, 0, 0, 0.7);
+    border: 1px solid #333;
+    border-radius: 6px;
+    margin-top: 4px;
+    position: relative;
+    overflow: hidden;
+}
+
+.core-fill {
+    height: 100%;
+    width: 50%;
+    transition: width 0.4s ease;
+    border-radius: 5px;
+}
+
+.p1-core-box .core-fill {
+    background: linear-gradient(90deg, #0088aa, var(--primary));
+    box-shadow: 0 0 8px var(--primary-glow);
+}
+
+.p2-core-box .core-fill {
+    background: linear-gradient(90deg, #aa0088, var(--secondary));
+    box-shadow: 0 0 8px var(--secondary-glow);
+}
+
+.core-label {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Courier New', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 1px;
+    color: #fff;
+    text-shadow: 0 0 4px #000;
+}
+
+/* ==============================================
+   CAPTURED PIECES SCROLL
+============================================== */
+.captured-box {
+    font-size: 1.05rem;
+    height: 28px;
+    opacity: 0.9;
+    margin-top: 4px;
+    letter-spacing: 3px;
+    color: var(--gold);
+    text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+    white-space: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    display: flex;
+    align-items: center;
+    padding: 0 4px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--secondary) #050508;
+    max-width: 150px;
+}
+
+.captured-box::-webkit-scrollbar {
+    height: 4px;
+}
+
+.captured-box::-webkit-scrollbar-track {
+    background: #050508;
+}
+
+.captured-box::-webkit-scrollbar-thumb {
+    background-color: var(--secondary);
+    border-radius: 2px;
+}
+
+/* ==============================================
+   CONTROLS PANEL
+============================================== */
 .controls {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 6px;
+    gap: 4px;
     flex: 1.2;
+    min-width: 0;
+}
+
+#status {
+    font-size: 0.72rem;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+    text-shadow: 0 0 10px currentColor;
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 2px;
+    white-space: nowrap;
 }
 
 .button-group {
     display: flex;
-    gap: 8px;
-    margin-top: 5px;
+    gap: 5px;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
-#status {
-    font-size: 0.75rem;
-    font-weight: bold;
-    letter-spacing: 2px;
-    text-shadow: 0 0 10px currentColor;
-    text-transform: uppercase;
-    text-align: center;
-}
-
-#restartBtn, #statsBtn {
-    background: transparent;
-    padding: 5px 12px;
+#restartBtn, .action-btn {
+    background: rgba(0, 0, 0, 0.7);
+    padding: 5px 9px;
     font-family: 'Courier New', monospace;
     cursor: pointer;
     text-transform: uppercase;
-    transition: 0.3s;
-    font-size: 0.6rem;
-    border-radius: 2px;
+    transition: all 0.25s ease;
+    font-size: 0.65rem;
+    border: 1px solid var(--secondary);
+    color: var(--secondary);
+    border-radius: 3px;
+    letter-spacing: 0.5px;
 }
 
-#restartBtn {
-    border: 1px solid #ff00ff;
-    color: #ff00ff;
-}
-
-#restartBtn:hover {
-    background: #ff00ff;
+#restartBtn:hover, .action-btn:hover {
+    background: var(--secondary);
     color: #000;
-    box-shadow: 0 0 15px #ff00ff;
+    box-shadow: 0 0 12px var(--secondary-glow);
 }
 
-#statsBtn {
-    border: 1px solid #00f2ff;
-    color: #00f2ff;
-}
-
-#statsBtn:hover {
-    background: #00f2ff;
+.action-btn.active {
+    background: var(--primary);
     color: #000;
-    box-shadow: 0 0 15px #00f2ff;
+    border-color: var(--primary);
+    box-shadow: 0 0 12px var(--primary-glow);
 }
 
-/* Chessboard Styling */
-canvas {
-    border: 1px solid rgba(0, 242, 255, 0.3);
-    box-shadow: 0 0 40px rgba(0, 0, 0, 0.9);
-    border-radius: 2px;
-    margin-top: 5px;
-    z-index: 5;
-    background: #000;
-}
-
-/* Terminal Styling */
-#log-terminal {
+/* ==============================================
+   DYNAMIC NEURAL ADVANTAGE EVALUATION GAUGE
+============================================== */
+#eval-bar-wrapper {
     width: 92%;
     max-width: 600px;
-    height: 85px;
-    background: rgba(5, 5, 10, 0.85);
-    backdrop-filter: blur(15px);
-    border: 1px solid rgba(0, 242, 255, 0.2);
-    border-top: 2px solid #00f2ff;
-    margin-top: auto;
-    margin-bottom: 20px;
-    font-family: 'Courier New', monospace;
-    font-size: 10px;
-    color: #00f2ff;
-    overflow-y: auto;
-    padding: 12px;
-    box-shadow: 0 -5px 25px rgba(0,0,0,0.6);
+    margin: 2px auto 6px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
     z-index: 10;
 }
 
-.log-line {
-    border-left: 2px solid #00f2ff;
-    padding-left: 8px;
-    margin-bottom: 4px;
-    text-shadow: 0 0 5px #00f2ff;
+.eval-bar-track {
+    width: 100%;
+    height: 6px;
+    background: rgba(15, 15, 30, 0.9);
+    border: 1px solid rgba(0, 242, 255, 0.2);
+    border-radius: 3px;
+    position: relative;
+    overflow: hidden;
 }
 
-/* NEW: Player Selection Overlay Elements */
+#eval-bar-fill {
+    height: 100%;
+    width: 50%;
+    background: linear-gradient(90deg, var(--secondary) 0%, #ffffff 50%, var(--primary) 100%);
+    transition: width 0.4s ease;
+    box-shadow: 0 0 8px var(--primary-glow);
+}
+
+.eval-center-mark {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: rgba(255, 255, 255, 0.8);
+    transform: translateX(-50%);
+}
+
+.eval-meta {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Courier New', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 1px;
+    color: #8899aa;
+    padding: 0 2px;
+}
+
+.threat-tag {
+    color: var(--primary);
+}
+
+.threat-tag.danger {
+    color: var(--accent);
+    text-shadow: 0 0 6px var(--accent-glow);
+    font-weight: bold;
+}
+
+/* ==============================================
+   AI THINKING TELEMETRY BANNER
+============================================== */
+.ai-banner {
+    width: 92%;
+    max-width: 600px;
+    padding: 4px 10px;
+    background: rgba(0, 242, 255, 0.1);
+    border: 1px solid var(--primary);
+    font-family: 'Courier New', monospace;
+    font-size: 0.65rem;
+    color: var(--primary);
+    text-align: center;
+    border-radius: 2px;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 0 12px var(--primary-glow);
+    z-index: 10;
+}
+
+.pulse-beacon {
+    width: 8px;
+    height: 8px;
+    background: var(--primary);
+    border-radius: 50%;
+    animation: beaconPulse 0.8s infinite alternate;
+}
+
+@keyframes beaconPulse {
+    0% { transform: scale(0.6); opacity: 0.4; }
+    100% { transform: scale(1.3); opacity: 1; box-shadow: 0 0 10px var(--primary); }
+}
+
+/* ==============================================
+   BOARD WRAPPER & CANVAS
+============================================== */
+.board-wrapper {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2px;
+    z-index: 5;
+}
+
+canvas {
+    border: 1px solid var(--border-color);
+    box-shadow: 0 0 35px rgba(0, 0, 0, 0.95), 0 0 15px rgba(0, 242, 255, 0.15);
+    border-radius: 3px;
+    background: #000;
+    touch-action: none; /* smooth zero-lag mobile touch */
+}
+
+/* Glitch trigger effect for King elimination */
+.glitch-active {
+    animation: canvasGlitch 0.25s infinite;
+}
+
+@keyframes canvasGlitch {
+    0% { transform: translate(0, 0); filter: hue-rotate(0deg); }
+    25% { transform: translate(-3px, 2px); filter: hue-rotate(90deg); }
+    50% { transform: translate(3px, -2px); filter: hue-rotate(180deg); }
+    75% { transform: translate(-2px, -3px); filter: hue-rotate(270deg); }
+    100% { transform: translate(0, 0); filter: hue-rotate(360deg); }
+}
+
+/* ==============================================
+   TACTICAL CYBER OVERDRIVE ACTIONS DECK
+============================================== */
+.overdrive-deck {
+    width: 92%;
+    max-width: 600px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 8px 12px;
+    margin: 8px auto 0 auto;
+    backdrop-filter: blur(12px);
+    z-index: 10;
+}
+
+.deck-header {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Courier New', monospace;
+    font-size: 0.65rem;
+    color: var(--primary);
+    margin-bottom: 6px;
+    letter-spacing: 1px;
+}
+
+.deck-buttons {
+    display: flex;
+    gap: 8px;
+    justify-content: space-between;
+}
+
+.deck-btn {
+    flex: 1;
+    background: rgba(0, 0, 0, 0.7);
+    border: 1px solid var(--primary);
+    color: var(--primary);
+    padding: 6px 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.62rem;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: all 0.25s ease;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.deck-btn:hover:not(:disabled) {
+    background: var(--primary);
+    color: #000;
+    box-shadow: 0 0 14px var(--primary-glow);
+}
+
+.deck-btn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    border-color: #444;
+    color: #777;
+}
+
+/* ==============================================
+   EXIT BUTTON
+============================================== */
+.exit-container {
+    margin: 10px 0 6px 0;
+    z-index: 10;
+}
+
+.exit-btn {
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    padding: 8px 20px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.74rem;
+    cursor: pointer;
+    letter-spacing: 2px;
+    transition: 0.35s;
+    border-radius: 2px;
+}
+
+.exit-btn:hover {
+    background: var(--accent);
+    color: white;
+    box-shadow: 0 0 20px var(--accent-glow);
+}
+
+/* ==============================================
+   LOG TERMINAL
+============================================== */
+#log-terminal {
+    width: 92%;
+    max-width: 600px;
+    height: 80px;
+    background: rgba(5, 5, 12, 0.9);
+    backdrop-filter: blur(15px);
+    border: 1px solid var(--border-color);
+    border-top: 2px solid var(--primary);
+    margin-top: auto;
+    margin-bottom: 15px;
+    font-family: 'Courier New', monospace;
+    font-size: 9.5px;
+    color: var(--primary);
+    overflow-y: auto;
+    padding: 10px;
+    box-shadow: 0 -5px 25px rgba(0,0,0,0.6);
+    z-index: 10;
+    scroll-behavior: smooth;
+}
+
+.log-line {
+    border-left: 2px solid var(--primary);
+    padding-left: 7px;
+    margin-bottom: 3px;
+    text-shadow: 0 0 5px var(--primary-glow);
+    line-height: 1.35;
+}
+
+.log-line.alert {
+    border-left-color: var(--accent);
+    color: var(--accent);
+    text-shadow: 0 0 5px var(--accent-glow);
+}
+
+.log-line.gold {
+    border-left-color: var(--gold);
+    color: var(--gold);
+}
+
+/* ==============================================
+   STARTUP & IDENTITY OVERLAY
+============================================== */
 #overlay {
     position: fixed;
     inset: 0;
-    background: radial-gradient(circle, #0a0a1a 0%, #000 100%);
+    background: radial-gradient(circle at center, #0e0e22 0%, #030308 100%);
     z-index: 1000;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: 10px;
 }
 
-.boot-options {
-    display: flex;
-    gap: 20px;
-}
-
-.start-choice {
-    background: transparent;
-    border: 1px solid #00f2ff;
-    color: #00f2ff;
-    padding: 12px 25px;
+.sub-glitch {
     font-family: 'Courier New', monospace;
-    font-size: 0.8rem;
+    font-size: 0.72rem;
+    letter-spacing: 3px;
+    color: var(--secondary);
+    text-shadow: 0 0 8px var(--secondary-glow);
+    margin-top: -12px;
+    margin-bottom: 10px;
+}
+
+/* Game Mode Tabs */
+.mode-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+    width: 100%;
+    max-width: 320px;
+    justify-content: center;
+}
+
+.mode-tab-btn {
+    flex: 1;
+    background: rgba(0, 0, 0, 0.7);
+    border: 1px solid #444;
+    color: #999;
+    font-family: 'Courier New', monospace;
+    font-size: 0.65rem;
+    padding: 8px 4px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.25s ease;
+    letter-spacing: 0.5px;
+}
+
+.mode-tab-btn.active {
+    background: rgba(0, 242, 255, 0.15);
+    border-color: var(--primary);
+    color: var(--primary);
+    box-shadow: 0 0 14px var(--primary-glow);
+}
+
+/* AI Persona Picker */
+.persona-picker {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 10px;
+    width: 100%;
+    max-width: 320px;
+}
+
+.persona-label {
+    font-family: 'Courier New', monospace;
+    font-size: 0.62rem;
+    color: var(--primary);
+    letter-spacing: 1.5px;
+}
+
+.persona-options {
+    display: flex;
+    gap: 6px;
+    width: 100%;
+}
+
+.persona-btn {
+    flex: 1;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid #444;
+    color: #aaa;
+    font-family: 'Courier New', monospace;
+    font-size: 0.58rem;
+    padding: 6px 2px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.2s ease;
+}
+
+.persona-btn.active {
+    border-color: var(--secondary);
+    color: var(--secondary);
+    box-shadow: 0 0 10px var(--secondary-glow);
+}
+
+/* Network Config Box */
+.net-config-box {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 10px;
+    width: 100%;
+    max-width: 280px;
+}
+
+.small-cyber-btn {
+    background: transparent;
+    border: 1px solid var(--primary);
+    color: var(--primary);
+    font-family: 'Courier New', monospace;
+    font-size: 0.68rem;
+    padding: 7px 15px;
+    cursor: pointer;
+    letter-spacing: 1px;
+}
+
+.small-cyber-btn:hover {
+    background: var(--primary);
+    color: #000;
+}
+
+.net-badge {
+    font-family: 'Courier New', monospace;
+    font-size: 0.6rem;
+    color: #888;
+    letter-spacing: 1px;
+}
+
+/* Neo Inputs */
+.neo-input {
+    background: #050508;
+    border: 1px solid var(--primary);
+    color: var(--primary);
+    padding: 10px;
+    font-family: 'Courier New', monospace;
+    text-transform: uppercase;
+    text-align: center;
+    outline: none;
+    width: 260px;
+    transition: 0.3s ease;
+    border-radius: 2px;
+    font-size: 0.85rem;
+}
+
+.neo-input:focus {
+    box-shadow: 0 0 15px var(--primary-glow);
+    background: rgba(0, 242, 255, 0.08);
+}
+
+/* Overdrive Toggle Switch */
+.overdrive-toggle-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.cyber-switch {
+    position: relative;
+    display: inline-block;
+    width: 38px;
+    height: 20px;
+}
+
+.cyber-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.cyber-slider {
+    position: absolute;
+    cursor: pointer;
+    inset: 0;
+    background-color: #222;
+    border: 1px solid #555;
+    transition: .3s;
+    border-radius: 10px;
+}
+
+.cyber-slider:before {
+    position: absolute;
+    content: "";
+    height: 12px;
+    width: 12px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .3s;
+    border-radius: 50%;
+}
+
+.cyber-switch input:checked + .cyber-slider {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    box-shadow: 0 0 10px var(--primary-glow);
+}
+
+.cyber-switch input:checked + .cyber-slider:before {
+    transform: translateX(18px);
+    background-color: #000;
+}
+
+.overdrive-label {
+    font-family: 'Courier New', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 1px;
+    color: #aaa;
+}
+
+/* Start Buttons */
+.start-btn {
+    padding: 9px 18px;
+    margin: 4px;
+    background: transparent;
+    border: 2px solid var(--primary);
+    color: var(--primary);
+    font-family: 'Courier New', monospace;
     cursor: pointer;
     text-transform: uppercase;
-    letter-spacing: 2px;
-    transition: 0.4s;
-    box-shadow: 0 0 10px rgba(0, 242, 255, 0.2);
+    letter-spacing: 1px;
+    transition: 0.3s;
+    border-radius: 2px;
+    font-size: 0.8rem;
 }
 
-.start-choice:hover {
+.start-btn:hover {
+    background: var(--primary);
+    color: black;
+    box-shadow: 0 0 20px var(--primary-glow);
+}
+
+/* Glitch Title */
+.glitch-title {
+    font-size: 2.8rem;
+    letter-spacing: 8px;
+    font-family: 'Segoe UI', sans-serif;
+    color: var(--primary);
+    text-transform: uppercase;
+    text-align: center;
+    margin: 0;
+    text-shadow:
+        0 0 5px var(--primary),
+        0 0 10px var(--primary),
+        0 0 20px var(--primary),
+        0 0 40px var(--secondary),
+        0 0 80px var(--secondary);
+    animation: neonPulse 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes neonPulse {
+    0% {
+        text-shadow: 0 0 3px var(--primary), 0 0 7px var(--primary), 0 0 15px var(--primary), 0 0 25px var(--secondary), 0 0 50px var(--secondary);
+    }
+    100% {
+        text-shadow: 0 0 5px var(--primary), 0 0 14px var(--primary), 0 0 25px var(--primary), 0 0 50px var(--secondary), 0 0 90px var(--secondary);
+    }
+}
+
+/* ==============================================
+   HOLOGRAPHIC BATTLE DATA MODAL
+============================================== */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(12px);
+    z-index: 2000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+}
+
+.modal-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 0 40px rgba(0, 242, 255, 0.25);
+    border-radius: 6px;
+    width: 100%;
+    max-width: 480px;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 8px;
+}
+
+.modal-title {
+    font-family: 'Courier New', monospace;
+    font-size: 0.95rem;
+    color: var(--primary);
+    letter-spacing: 2px;
+    margin: 0;
+    text-shadow: 0 0 8px var(--primary-glow);
+}
+
+.modal-close {
+    background: transparent;
+    border: none;
+    color: #ff0055;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.analytics-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+}
+
+.stat-card {
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 4px;
+    padding: 10px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.stat-number {
+    font-family: 'Courier New', monospace;
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: var(--primary);
+    text-shadow: 0 0 10px var(--primary-glow);
+}
+
+.stat-label {
+    font-family: 'Courier New', monospace;
+    font-size: 0.6rem;
+    color: #8899aa;
+    letter-spacing: 1px;
+}
+
+.stat-detail-box {
+    background: rgba(0, 0, 0, 0.4);
+    border-left: 2px solid var(--secondary);
+    padding: 8px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.72rem;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.highlight-cyan {
+    color: var(--primary);
+}
+
+.highlight-magenta {
+    color: var(--secondary);
+}
+
+.pgn-box {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.pgn-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Courier New', monospace;
+    font-size: 0.65rem;
+    color: #aaa;
+}
+
+.pgn-copy-btn {
+    background: transparent;
+    border: 1px solid var(--primary);
+    color: var(--primary);
+    font-family: 'Courier New', monospace;
+    font-size: 0.6rem;
+    padding: 3px 8px;
+    cursor: pointer;
+    border-radius: 2px;
+}
+
+.pgn-content {
+    background: #020205;
+    border: 1px solid #222;
+    color: #00f2ff;
+    font-family: 'Courier New', monospace;
+    font-size: 0.65rem;
+    padding: 8px;
+    height: 70px;
+    resize: none;
+    border-radius: 2px;
+    outline: none;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: center;
+}
+
+/* ==============================================
+   RESPONSIVE ADJUSTMENTS FOR MOBILE VIEWPORTS
+============================================== */
+@media (max-width: 420px) {
+    .glitch-title {
+        font-size: 2.2rem;
+        letter-spacing: 5px;
+    }
+    .timer {
+        font-size: 0.78rem;
+        padding: 6px 6px;
+    }
+    .neo-input {
+        width: 220px;
+    }
+    .action-btn {
+        font-size: 0.58rem;
+        padding: 4px 6px;
+    }
+}
+
+/* ==============================================
+   CYBER VIEW PANELS & MULTI-VIEW PORTAL
+============================================== */
+.cyber-view-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 380px;
+    animation: fadeInView 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes fadeInView {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.panel-header {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    margin-bottom: 12px;
+}
+
+.panel-badge {
+    font-family: 'Courier New', monospace;
+    font-size: 0.6rem;
+    color: var(--secondary);
+    letter-spacing: 2px;
+    margin-bottom: 2px;
+}
+
+.panel-title {
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 1.1rem;
+    letter-spacing: 2px;
+    color: var(--primary);
+    margin: 0;
+    text-shadow: 0 0 10px var(--primary-glow);
+}
+
+.back-link-btn {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: #8899aa;
+    font-family: 'Courier New', monospace;
+    font-size: 0.65rem;
+    padding: 4px 8px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.2s;
+}
+
+.back-link-btn:hover {
+    color: var(--primary);
+    border-color: var(--primary);
+    box-shadow: 0 0 8px var(--primary-glow);
+}
+
+.author-tag {
+    font-family: 'Courier New', monospace;
+    letter-spacing: 2px;
+    color: var(--primary);
+    font-size: 0.78rem;
+    margin: 12px 0 0 0;
+}
+
+/* ==============================================
+   AUTHENTICATION STYLING
+============================================== */
+.auth-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+    width: 100%;
+    max-width: 280px;
+}
+
+.auth-tab-btn {
+    flex: 1;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid #444;
+    color: #888;
+    font-family: 'Courier New', monospace;
+    font-size: 0.7rem;
+    padding: 7px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.2s;
+}
+
+.auth-tab-btn.active {
+    border-color: var(--primary);
+    color: var(--primary);
+    background: rgba(0, 242, 255, 0.12);
+    box-shadow: 0 0 10px var(--primary-glow);
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    max-width: 290px;
+    align-items: center;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 3px;
+    text-align: left;
+}
+
+.input-tag {
+    font-family: 'Courier New', monospace;
+    font-size: 0.58rem;
+    color: #8899aa;
+    letter-spacing: 1px;
+}
+
+.auth-error {
+    font-family: 'Courier New', monospace;
+    font-size: 0.65rem;
+    color: var(--accent);
+    text-shadow: 0 0 6px var(--accent-glow);
+    text-align: center;
+}
+
+.auth-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+    margin-top: 5px;
+}
+
+.auth-main-btn {
+    width: 100%;
+    margin: 0;
+}
+
+/* ==============================================
+   OPERATOR PROFILE BAR
+============================================== */
+.operator-profile-bar {
+    width: 100%;
+    max-width: 330px;
+    background: rgba(10, 10, 26, 0.75);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    backdrop-filter: blur(10px);
+}
+
+.op-avatar {
+    font-size: 1.5rem;
     background: rgba(0, 242, 255, 0.1);
-    box-shadow: 0 0 20px #00f2ff;
+    border: 1px solid var(--primary);
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 8px var(--primary-glow);
+}
+
+.op-details {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    flex: 1;
+}
+
+.op-label {
+    font-family: 'Courier New', monospace;
+    font-size: 0.55rem;
+    color: #8899aa;
+    letter-spacing: 1px;
+}
+
+.op-name {
+    font-family: 'Segoe UI', sans-serif;
+    font-weight: bold;
+    font-size: 0.95rem;
+    color: var(--primary);
+    text-shadow: 0 0 6px var(--primary-glow);
+}
+
+.op-id {
+    font-family: 'Courier New', monospace;
+    font-size: 0.58rem;
+    color: var(--secondary);
+}
+
+.logout-btn {
+    background: transparent;
+    border: 1px solid #555;
+    color: #aaa;
+    font-family: 'Courier New', monospace;
+    font-size: 0.58rem;
+    padding: 3px 6px;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+.logout-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+/* ==============================================
+   MAIN MENU CARDS
+============================================== */
+.menu-cards-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    max-width: 330px;
+    margin-bottom: 12px;
+}
+
+.menu-card {
+    background: rgba(8, 8, 20, 0.85);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+}
+
+.menu-card:hover {
+    border-color: var(--primary);
+    box-shadow: 0 0 16px var(--primary-glow);
+    background: rgba(0, 242, 255, 0.1);
     transform: translateY(-2px);
 }
 
-/* Special styling for Black Selection */
-.black-choice {
-    border-color: #ff00ff;
-    color: #ff00ff;
-    box-shadow: 0 0 10px rgba(255, 0, 255, 0.2);
+.ai-card:hover {
+    border-color: var(--primary);
 }
 
-.black-choice:hover {
+.friend-card {
+    border-color: rgba(255, 0, 255, 0.3);
+}
+
+.friend-card:hover {
+    border-color: var(--secondary);
+    box-shadow: 0 0 16px var(--secondary-glow);
     background: rgba(255, 0, 255, 0.1);
-    box-shadow: 0 0 20px #ff00ff;
+}
+
+.local-card {
+    border-color: rgba(255, 215, 0, 0.25);
+}
+
+.local-card:hover {
+    border-color: var(--gold);
+    box-shadow: 0 0 16px rgba(255, 215, 0, 0.3);
+    background: rgba(255, 215, 0, 0.08);
+}
+
+.card-icon {
+    font-size: 1.8rem;
+}
+
+.card-text {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    flex: 1;
+}
+
+.card-title {
+    font-family: 'Segoe UI', sans-serif;
+    font-weight: bold;
+    font-size: 0.95rem;
+    letter-spacing: 1.5px;
+    color: #fff;
+}
+
+.card-subtitle {
+    font-family: 'Courier New', monospace;
+    font-size: 0.6rem;
+    color: #8899aa;
+    letter-spacing: 0.5px;
+    margin-top: 2px;
+}
+
+.card-arrow {
+    color: var(--primary);
+    font-size: 0.9rem;
+    opacity: 0.7;
+}
+
+/* ==============================================
+   FRIEND HUB (CREATE VS ENTER ROOM)
+============================================== */
+.friend-choice-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    max-width: 330px;
+    margin: 10px 0;
+}
+
+.choice-action-card {
+    background: rgba(8, 8, 20, 0.85);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    text-align: left;
+}
+
+.choice-action-card:hover {
+    transform: translateY(-2px);
+}
+
+.create-card {
+    border-color: rgba(0, 255, 102, 0.4);
+}
+
+.create-card:hover {
+    border-color: #00ff66;
+    box-shadow: 0 0 18px rgba(0, 255, 102, 0.35);
+    background: rgba(0, 255, 102, 0.08);
+}
+
+.enter-card {
+    border-color: rgba(0, 242, 255, 0.4);
+}
+
+.enter-card:hover {
+    border-color: var(--primary);
+    box-shadow: 0 0 18px var(--primary-glow);
+    background: rgba(0, 242, 255, 0.08);
+}
+
+.choice-title {
+    font-family: 'Segoe UI', sans-serif;
+    font-weight: bold;
+    font-size: 1rem;
+    letter-spacing: 1.5px;
+    color: #fff;
+}
+
+.choice-desc {
+    font-family: 'Courier New', monospace;
+    font-size: 0.65rem;
+    color: #99aacc;
+    line-height: 1.3;
+}
+
+.choice-btn {
+    align-self: flex-start;
+    background: transparent;
+    border: 1px solid var(--primary);
+    color: var(--primary);
+    font-family: 'Courier New', monospace;
+    font-size: 0.65rem;
+    padding: 5px 12px;
+    border-radius: 2px;
+    margin-top: 4px;
+    cursor: pointer;
+}
+
+.create-card .choice-btn {
+    border-color: #00ff66;
+    color: #00ff66;
+}
+
+.server-endpoint-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.62rem;
+    color: #778899;
+    margin-top: 8px;
+}
+
+.mini-server-input {
+    background: #020205;
+    border: 1px solid #444;
+    color: var(--primary);
+    font-family: 'Courier New', monospace;
+    font-size: 0.62rem;
+    padding: 3px 6px;
+    width: 160px;
+    outline: none;
+    border-radius: 2px;
+}
+
+/* ==============================================
+   CREATE ROOM: 5-DIGIT DISPLAY & WAITING RADAR
+============================================== */
+.code-container-card {
+    background: rgba(10, 10, 26, 0.85);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 16px;
+    width: 100%;
+    max-width: 330px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 0 25px rgba(0, 242, 255, 0.15);
+}
+
+.code-instruction {
+    font-family: 'Courier New', monospace;
+    font-size: 0.68rem;
+    color: #99aacc;
+    letter-spacing: 1px;
+    text-align: center;
+}
+
+.code-digits-display {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin: 8px 0;
+}
+
+.digit-box {
+    width: 48px;
+    height: 58px;
+    background: rgba(0, 242, 255, 0.08);
+    border: 2px solid var(--primary);
+    box-shadow: 0 0 14px var(--primary-glow);
+    color: var(--primary);
+    font-size: 2rem;
+    font-weight: bold;
+    font-family: 'Courier New', monospace;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    animation: digitPulse 1.8s infinite alternate;
+}
+
+@keyframes digitPulse {
+    0% { transform: scale(0.97); text-shadow: 0 0 6px var(--primary); }
+    100% { transform: scale(1.03); text-shadow: 0 0 16px var(--primary); }
+}
+
+.code-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    width: 100%;
+}
+
+.action-pill-btn {
+    background: rgba(0, 0, 0, 0.7);
+    border: 1px solid var(--primary);
+    color: var(--primary);
+    font-family: 'Courier New', monospace;
+    font-size: 0.68rem;
+    padding: 7px 12px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.action-pill-btn:hover {
+    background: var(--primary);
+    color: #000;
+    box-shadow: 0 0 12px var(--primary-glow);
+}
+
+.waiting-radar-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
+    width: 100%;
+}
+
+.radar-pulse {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--secondary);
+    box-shadow: 0 0 15px var(--secondary-glow);
+    animation: radarBlink 1.2s infinite ease-out;
+}
+
+@keyframes radarBlink {
+    0% { transform: scale(0.6); opacity: 1; }
+    100% { transform: scale(1.8); opacity: 0; }
+}
+
+.radar-status-text {
+    font-family: 'Courier New', monospace;
+    font-size: 0.65rem;
+    color: var(--secondary);
+    letter-spacing: 1px;
+    text-align: center;
+    line-height: 1.3;
+}
+
+.hint-text {
+    font-family: 'Courier New', monospace;
+    font-size: 0.6rem;
+    color: #778899;
+    text-align: center;
+    margin: 4px 0 0 0;
+    line-height: 1.3;
+}
+
+/* ==============================================
+   ENTER ROOM: 5-DIGIT INPUT BOX
+============================================== */
+.enter-code-card {
+    background: rgba(10, 10, 26, 0.85);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 18px;
+    width: 100%;
+    max-width: 330px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.digit-input-wrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.digit-input-box {
+    font-size: 2.2rem;
+    letter-spacing: 14px;
+    text-align: center;
+    width: 240px;
+    padding: 12px 6px 12px 18px;
+    font-family: 'Courier New', monospace;
+    background: #020205;
+    border: 2px solid var(--secondary);
+    color: var(--secondary);
+    box-shadow: 0 0 16px var(--secondary-glow);
+    outline: none;
+    border-radius: 4px;
+}
+
+.digit-input-box:focus {
+    box-shadow: 0 0 24px var(--secondary-glow);
+    border-color: #fff;
+}
+
+.paste-row {
+    display: flex;
+    justify-content: center;
+}
+
+.enter-status-msg {
+    font-family: 'Courier New', monospace;
+    font-size: 0.68rem;
+    color: var(--primary);
+    text-align: center;
+}
+
+.join-matrix-btn {
+    width: 100%;
+    border-color: var(--secondary);
+    color: var(--secondary);
+}
+
+.join-matrix-btn:hover:not(:disabled) {
+    background: var(--secondary);
+    color: #000;
+    box-shadow: 0 0 20px var(--secondary-glow);
+}
+
+.join-matrix-btn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    border-color: #555;
+    color: #777;
 }

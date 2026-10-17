@@ -4,88 +4,474 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="author" content="Goutam Gupta">
-    <meta name="description" content="NEO-CHESS: High-fidelity tactical simulation.">
-    <title>Neo-Chess | System v1.0</title>
+    <meta name="description" content="NEO-CHESS: High-fidelity tactical quantum simulation.">
+    <title>Neo-Chess | System v2.0 Quantum</title>
+
     <link rel="stylesheet" href="style.css">
+
     <style>
-        /* Choice Button Styling */
-        .boot-options {
+        /* Internal safeguard for the Identity Overlay positioning */
+        #overlay {
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle at center, #0e0e22 0%, #030308 100%);
+            z-index: 1000;
             display: flex;
-            gap: 20px;
-        }
-        .start-choice {
-            background: transparent;
-            border: 1px solid #00f2ff;
-            color: #00f2ff;
-            padding: 12px 25px;
-            font-family: 'Courier New', monospace;
-            font-size: 0.8rem;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            transition: 0.4s;
-            box-shadow: 0 0 10px rgba(0, 242, 255, 0.2);
-        }
-        .start-choice:hover {
-            background: rgba(0, 242, 255, 0.1);
-            box-shadow: 0 0 20px #00f2ff;
-            transform: translateY(-2px);
-        }
-        .black-choice {
-            border-color: #ff00ff;
-            color: #ff00ff;
-            box-shadow: 0 0 10px rgba(255, 0, 255, 0.2);
-        }
-        .black-choice:hover {
-            background: rgba(255, 0, 255, 0.1);
-            box-shadow: 0 0 20px #ff00ff;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            overflow-y: auto;
+            padding: 15px;
+            box-sizing: border-box;
         }
     </style>
 </head>
-<body>
+<body data-theme="neon">
 
 <div id="cyber-grid"></div>
 
-<div id="overlay">
-    <h1 style="color: #00f2ff; text-shadow: 0 0 20px #00f2ff; margin-bottom: 5px;">NEO-CHESS</h1>
-    <p style="color: #00f2ff; font-family: 'Courier New', Courier, monospace; font-size: 0.7rem; letter-spacing: 2px; margin-bottom: 30px; opacity: 0.6;">
-        DEVELOPER: GOUTAM GUPTA
-    </p>
-
-    <div class="boot-options">
-        <button class="start-choice" onclick="initGame('white')">INIT: WHITE_UNIT</button>
-        <button class="start-choice black-choice" onclick="initGame('black')">INIT: BLACK_UNIT</button>
+<!-- ==============================================
+     TOP TELEMETRY & SYSTEM QUICK-CONTROLS HUD
+============================================== -->
+<div class="top-nav-bar">
+    <div class="sys-badge">
+        <span class="live-dot"></span>
+        <span class="sys-title">NEO-CHESS // SYS v2.0</span>
+    </div>
+    <div class="quick-toggles">
+        <button id="sfxToggleBtn" class="pill-btn active" title="Toggle Synthesized Sci-Fi SFX">SFX: ON</button>
+        <button id="droneToggleBtn" class="pill-btn" title="Toggle Cybernetic Ambient Drone">DRONE: OFF</button>
+        <button id="themeToggleBtn" class="pill-btn highlight" title="Cycle Futuristic Themes">THEME: NEON</button>
     </div>
 </div>
 
-<div class="stats">
-    <div class="player-block">
-        <div id="p2-timer" class="timer">BLACK: 05:00</div>
-        <div id="p2-captured" class="captured-box"></div>
+<!-- ==============================================
+     FRONT PAGE OVERLAY (MULTI-VIEW CYBER PORTAL)
+============================================== -->
+<div id="overlay">
+    <h1 class="glitch-title">NEO-CHESS</h1>
+    <div class="sub-glitch">TACTICAL QUANTUM SIMULATION // QUANTUM MATRIX</div>
+
+    <!-- ------------------------------------------
+         SCREEN 1: OPERATOR AUTHENTICATION
+    ------------------------------------------- -->
+    <div id="view-auth" class="cyber-view-panel" style="display:none;">
+        <div class="panel-header">
+            <span class="panel-badge">SECURITY CLEARANCE REQUIRED</span>
+            <h2 class="panel-title">OPERATOR AUTHENTICATION</h2>
+        </div>
+
+        <div class="auth-tabs">
+            <button class="auth-tab-btn active" id="tabLogin" onclick="switchAuthTab('login')">LOGIN</button>
+            <button class="auth-tab-btn" id="tabRegister" onclick="switchAuthTab('register')">REGISTER</button>
+        </div>
+
+        <div class="auth-form">
+            <div class="input-group">
+                <span class="input-tag">CALLSIGN // OPERATOR NAME</span>
+                <input type="text" id="auth-username" placeholder="ENTER YOUR CALLSIGN" class="neo-input" maxlength="20">
+            </div>
+
+            <div class="input-group">
+                <span class="input-tag">ACCESS KEY // NEURAL PIN</span>
+                <input type="password" id="auth-password" placeholder="ENTER ACCESS KEY" class="neo-input" maxlength="15">
+            </div>
+
+            <div id="auth-error-msg" class="auth-error" style="display:none;"></div>
+
+            <div class="auth-buttons">
+                <button class="start-btn auth-main-btn" id="auth-submit-btn" onclick="handleAuthSubmit()">AUTHENTICATE & ENTER</button>
+                <button class="small-cyber-btn" onclick="quickGuestAuth()">⚡ QUICK ACCESS (GUEST OPERATOR)</button>
+            </div>
+        </div>
+
+        <p class="author-tag">Developed By Goutam Gupta</p>
     </div>
 
-    <div class="controls">
-        <div id="status">STANDBY</div>
-        <div class="button-group" id="btn-container">
-            <button id="restartBtn" onclick="resetGame()" style="display:none;">REBOOT</button>
+    <!-- ------------------------------------------
+         SCREEN 2: MAIN MENU (PLAY WITH AI OR PLAY WITH FRIEND)
+    ------------------------------------------- -->
+    <div id="view-menu" class="cyber-view-panel" style="display:flex;">
+        <!-- Authenticated Operator Info Bar -->
+        <div class="operator-profile-bar">
+            <div class="op-avatar">♟️</div>
+            <div class="op-details">
+                <span class="op-label">AUTHENTICATED OPERATOR:</span>
+                <span class="op-name" id="profile-display-name">OPERATOR_01</span>
+                <span class="op-id" id="profile-display-id">ID: #79214</span>
+            </div>
+            <button class="logout-btn" onclick="logoutOperator()" title="Switch Account">LOGOUT</button>
+        </div>
+
+        <div class="menu-cards-container">
+            <!-- Option 1: PLAY WITH AI -->
+            <div class="menu-card ai-card" onclick="showAiSetupScreen()">
+                <div class="card-icon">🤖</div>
+                <div class="card-text">
+                    <div class="card-title">PLAY WITH AI</div>
+                    <div class="card-subtitle">SOLO QUANTUM SIMULATION // 3 CYBER PERSONAS</div>
+                </div>
+                <div class="card-arrow">▶</div>
+            </div>
+
+            <!-- Option 2: PLAY WITH FRIEND -->
+            <div class="menu-card friend-card" onclick="showFriendHubScreen()">
+                <div class="card-icon">👥</div>
+                <div class="card-text">
+                    <div class="card-title">PLAY WITH FRIEND</div>
+                    <div class="card-subtitle">P2P ROOM MATRIX // 5-DIGIT CODE PAIRING</div>
+                </div>
+                <div class="card-arrow">▶</div>
+            </div>
+
+            <!-- Option 3: LOCAL DUEL (PASS & PLAY) -->
+            <div class="menu-card local-card" onclick="showLocalDuelScreen()">
+                <div class="card-icon">⚔️</div>
+                <div class="card-text">
+                    <div class="card-title">LOCAL DUEL (PVP)</div>
+                    <div class="card-subtitle">2 PLAYERS ON ONE DEVICE // HOTSEAT</div>
+                </div>
+                <div class="card-arrow">▶</div>
+            </div>
+        </div>
+
+        <!-- Cyber Overdrive Toggle -->
+        <div class="overdrive-toggle-wrapper">
+            <label class="cyber-switch">
+                <input type="checkbox" id="overdrive-toggle">
+                <span class="cyber-slider"></span>
+            </label>
+            <span class="overdrive-label">CYBER OVERDRIVE PROTOCOL (TACTICAL POWERS)</span>
+        </div>
+
+        <p class="author-tag">Developed By Goutam Gupta</p>
+    </div>
+
+    <!-- ------------------------------------------
+         SCREEN 3: PLAY WITH AI SETUP
+    ------------------------------------------- -->
+    <div id="view-ai-setup" class="cyber-view-panel" style="display:none;">
+        <div class="panel-header">
+            <button class="back-link-btn" onclick="showMainMenu()">← BACK</button>
+            <h2 class="panel-title">VS NEURAL A.I. CYBER-CORE</h2>
+        </div>
+
+        <div class="ai-config-section">
+            <span class="section-label">SELECT A.I. MATRIX DIFFICULTY:</span>
+            <div class="persona-options">
+                <button class="persona-btn active" data-diff="novice" onclick="setAiDiff('novice')">CYBER NOVICE</button>
+                <button class="persona-btn" data-diff="synth" onclick="setAiDiff('synth')">TACTICAL SYNTH</button>
+                <button class="persona-btn" data-diff="oracle" onclick="setAiDiff('oracle')">NEO ORACLE</button>
+            </div>
+        </div>
+
+        <div class="side-picker-section">
+            <span class="section-label">CHOOSE YOUR PROTOCOL:</span>
+            <div style="display:flex; gap:10px; justify-content:center; margin-top:8px;">
+                <button class="start-btn" onclick="startAiGame('white')">LEAD AS WHITE (ATTACK)</button>
+                <button class="start-btn" style="border-color:#ff00ff; color:#ff00ff;" onclick="startAiGame('black')">DEFEND AS BLACK (COUNTER)</button>
+            </div>
         </div>
     </div>
 
+    <!-- ------------------------------------------
+         SCREEN 4: FRIEND HUB (CREATE ROOM OR ENTER ROOM)
+    ------------------------------------------- -->
+    <div id="view-friend-hub" class="cyber-view-panel" style="display:none;">
+        <div class="panel-header">
+            <button class="back-link-btn" onclick="showMainMenu()">← BACK</button>
+            <h2 class="panel-title">PLAY WITH FRIEND // ROOM HUB</h2>
+        </div>
+
+        <div class="friend-choice-cards">
+            <!-- CREATE ROOM -->
+            <div class="choice-action-card create-card" onclick="openCreateRoomScreen()">
+                <div class="choice-icon">🟢</div>
+                <div class="choice-content">
+                    <div class="choice-title">CREATE ROOM</div>
+                    <div class="choice-desc">System generates a 5-digit room code for your friend to enter</div>
+                </div>
+                <button class="choice-btn">GENERATE ROOM ▶</button>
+            </div>
+
+            <!-- ENTER ROOM -->
+            <div class="choice-action-card enter-card" onclick="openEnterRoomScreen()">
+                <div class="choice-icon">🔵</div>
+                <div class="choice-content">
+                    <div class="choice-title">ENTER ROOM</div>
+                    <div class="choice-desc">Enter the 5-digit room code generated by your friend</div>
+                </div>
+                <button class="choice-btn">JOIN ROOM ▶</button>
+            </div>
+        </div>
+
+        <!-- Optional Server Address Switcher -->
+        <div class="server-endpoint-bar">
+            <span class="endpoint-label">SERVER MATRIX:</span>
+            <input type="text" id="custom-server-ip" class="mini-server-input" value="ws://192.168.1.5:8080">
+        </div>
+    </div>
+
+    <!-- ------------------------------------------
+         SCREEN 5: CREATE ROOM (5-DIGIT CODE GENERATION)
+    ------------------------------------------- -->
+    <div id="view-create-room" class="cyber-view-panel" style="display:none;">
+        <div class="panel-header">
+            <button class="back-link-btn" onclick="showFriendHubScreen()">← CANCEL</button>
+            <h2 class="panel-title">ROOM CREATED // HOSTING</h2>
+        </div>
+
+        <div class="code-container-card">
+            <span class="code-instruction">SHARE THIS 5-DIGIT CODE WITH YOUR FRIEND:</span>
+
+            <!-- Large 5-Digit Display -->
+            <div class="code-digits-display" id="generated-code-display">
+                <span class="digit-box">-</span>
+                <span class="digit-box">-</span>
+                <span class="digit-box">-</span>
+                <span class="digit-box">-</span>
+                <span class="digit-box">-</span>
+            </div>
+
+            <div class="code-actions">
+                <button class="action-pill-btn" onclick="copyCreatedRoomCode()">📋 COPY 5-DIGIT CODE</button>
+                <button class="action-pill-btn" onclick="generateNew5DigitRoom()">🔄 NEW CODE</button>
+            </div>
+
+            <!-- Waiting Radar Animation -->
+            <div class="waiting-radar-box">
+                <div class="radar-pulse"></div>
+                <div class="radar-status-text" id="create-room-status-text">
+                    WAITING FOR FRIEND (OPERATOR 2) TO ENTER CODE...
+                </div>
+            </div>
+
+            <p class="hint-text">
+                Your friend must select <strong>"ENTER ROOM"</strong> and enter this exact 5-digit code. The battle will launch automatically!
+            </p>
+        </div>
+    </div>
+
+    <!-- ------------------------------------------
+         SCREEN 6: ENTER ROOM (5-DIGIT CODE INPUT)
+    ------------------------------------------- -->
+    <div id="view-enter-room" class="cyber-view-panel" style="display:none;">
+        <div class="panel-header">
+            <button class="back-link-btn" onclick="showFriendHubScreen()">← BACK</button>
+            <h2 class="panel-title">ENTER 5-DIGIT ROOM CODE</h2>
+        </div>
+
+        <div class="enter-code-card">
+            <span class="code-instruction">INPUT THE 5-DIGIT CODE GENERATED BY YOUR FRIEND:</span>
+
+            <div class="digit-input-wrapper">
+                <input type="text" id="enter-code-input" class="digit-input-box" maxlength="5" placeholder="12345" inputmode="numeric" pattern="[0-9]*" oninput="handle5DigitInput(this)">
+            </div>
+
+            <div class="paste-row">
+                <button class="small-cyber-btn" onclick="pasteRoomCode()">📋 PASTE CODE FROM CLIPBOARD</button>
+            </div>
+
+            <div id="enter-room-status-text" class="enter-status-msg" style="display:none;"></div>
+
+            <button class="start-btn join-matrix-btn" id="join-room-btn" onclick="submitEnterRoomCode()" disabled>
+                CONNECT & JOIN BATTLE
+            </button>
+        </div>
+    </div>
+
+    <!-- ------------------------------------------
+         SCREEN 7: LOCAL DUEL SETUP (PRESERVED)
+    ------------------------------------------- -->
+    <div id="view-local-duel" class="cyber-view-panel" style="display:none;">
+        <div class="panel-header">
+            <button class="back-link-btn" onclick="showMainMenu()">← BACK</button>
+            <h2 class="panel-title">LOCAL OPERATOR DUEL</h2>
+        </div>
+
+        <!-- Preserved Player Inputs -->
+        <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:12px; width:100%; max-width:280px;">
+            <input type="text" id="p1-input" placeholder="PLAYER 1 NAME" class="neo-input" value="OPERATOR_01">
+            <input type="text" id="p2-input" placeholder="PLAYER 2 NAME" class="neo-input" value="OPERATOR_02">
+        </div>
+
+        <!-- Preserved Start Buttons -->
+        <div style="margin-top:5px; display:flex; gap:12px; flex-wrap:wrap; justify-content:center;">
+            <button class="start-btn" id="p1White" onclick="finalizeIdentity(true)">P1: WHITE (LEAD)</button>
+            <button class="start-btn" id="p1Black" style="border-color:#ff00ff; color:#ff00ff;" onclick="finalizeIdentity(false)">P1: BLACK (DEFENSE)</button>
+        </div>
+    </div>
+
+</div>
+
+<!-- ==============================================
+     HEADER STATS, PLAYERS & TIMERS HUD
+============================================== -->
+<div class="stats">
+    <!-- Player 2 Block (Black) -->
+    <div class="player-block">
+        <div id="p2-timer" class="timer">BLACK: 05:00</div>
+        <!-- Overdrive Energy Core (P2) -->
+        <div class="core-meter p2-core-box" id="p2-core-box" style="display:none;" title="Black Energy Core">
+            <div class="core-fill" id="p2-core-fill" style="width: 50%;"></div>
+            <span class="core-label">CORE 50%</span>
+        </div>
+        <div id="p2-captured" class="captured-box"></div>
+    </div>
+
+    <!-- Central Controls & Status -->
+    <div class="controls">
+        <div id="status">STANDBY</div>
+        <div class="button-group" id="btn-container">
+            <button id="restartBtn" style="display:none;">REBOOT</button>
+            <button id="undoBtn" class="action-btn" title="Chrono-Rewind (T-1) Quantum Step">CHRONO T-1</button>
+            <button id="radarBtn" class="action-btn" title="Toggle Threat Radar Heatmap">RADAR</button>
+            <button id="dataBtn" class="action-btn" title="Battle Analytics Deck">DATA</button>
+        </div>
+    </div>
+
+    <!-- Player 1 Block (White) -->
     <div class="player-block">
         <div id="p1-timer" class="timer">WHITE: 05:00</div>
+        <!-- Overdrive Energy Core (P1) -->
+        <div class="core-meter p1-core-box" id="p1-core-box" style="display:none;" title="White Energy Core">
+            <div class="core-fill" id="p1-core-fill" style="width: 50%;"></div>
+            <span class="core-label">CORE 50%</span>
+        </div>
         <div id="p1-captured" class="captured-box"></div>
     </div>
 </div>
 
-<canvas id="board"></canvas>
+<!-- ==============================================
+     REAL-TIME NEURAL ADVANTAGE EVALUATION GAUGE
+============================================== -->
+<div id="eval-bar-wrapper">
+    <div class="eval-bar-track">
+        <div id="eval-bar-fill"></div>
+        <div class="eval-center-mark"></div>
+    </div>
+    <div class="eval-meta">
+        <span id="eval-score-text">EVAL: BALANCED [0.0]</span>
+        <span id="threat-indicator" class="threat-tag">STANDBY</span>
+    </div>
+</div>
 
+<!-- ==============================================
+     AI THINKING TELEMETRY BANNER
+============================================== -->
+<div id="ai-telemetry" class="ai-banner" style="display:none;">
+    <span class="pulse-beacon"></span>
+    <span id="ai-telemetry-text">NEURAL CORE PROCESSING // SIMULATING TRAJECTORIES...</span>
+</div>
+
+<!-- ==============================================
+     CHESSBOARD CANVAS (CANVAS ID: BOARD PRESERVED)
+============================================== -->
+<div class="board-wrapper">
+    <canvas id="board"></canvas>
+    <div id="coord-hud" class="coord-layer"></div>
+</div>
+
+<!-- ==============================================
+     TACTICAL CYBER OVERDRIVE ACTIONS DECK
+============================================== -->
+<div id="overdrive-deck" class="overdrive-deck" style="display:none;">
+    <div class="deck-header">
+        <span class="deck-title">QUANTUM OVERDRIVE PROTOCOLS</span>
+        <span class="deck-cost">SELECT ABILITY</span>
+    </div>
+    <div class="deck-buttons">
+        <button id="empBtn" class="deck-btn" onclick="triggerOverdriveEmp()" title="Highlight all enemy threat lines for 1 turn">
+            <span class="icon">⚡</span> EMP RECON (25%)
+        </button>
+        <button id="shieldBtn" class="deck-btn" onclick="prepareOverdriveShield()" title="Project a forcefield shield onto one piece">
+            <span class="icon">🛡️</span> PLASMA SHIELD (50%)
+        </button>
+        <button id="swapBtn" class="deck-btn" onclick="prepareQuantumSwap()" title="Swap positions of 2 friendly units">
+            <span class="icon">🌀</span> QUANTUM SWAP (100%)
+        </button>
+    </div>
+</div>
+
+<!-- ==============================================
+     EXIT CONTAINER (PRESERVED)
+============================================== -->
+<div class="exit-container">
+    <button class="exit-btn" onclick="location.reload()">TERMINATE SESSION</button>
+</div>
+
+<!-- ==============================================
+     LOG TERMINAL (PRESERVED)
+============================================== -->
 <div id="log-terminal">
     <div class="log-line">> SYSTEM_BOOT: COMPLETED</div>
-    <div class="log-line">> OPERATOR_ID: GOUTAM_GUPTA</div>
-    <div class="log-line">> ACCESS_GRANTED: WELCOME</div>
-    <div class="log-line">> SELECT DEPLOYMENT UNIT TO START...</div>
+    <div class="log-line">> AUTH_ID: GOUTAM_GUPTA_V1</div>
+</div>
+
+<!-- ==============================================
+     HOLOGRAPHIC BATTLE DATA DECK MODAL
+============================================== -->
+<div id="battle-modal" class="modal-overlay" style="display:none;">
+    <div class="modal-card">
+        <div class="modal-header">
+            <h2 class="modal-title">COMBAT TELEMETRY & ANALYTICS</h2>
+            <button class="modal-close" onclick="closeBattleReport()">✕</button>
+        </div>
+        <div class="modal-body">
+            <div class="analytics-grid">
+                <div class="stat-card">
+                    <span class="stat-number" id="modal-moves">0</span>
+                    <span class="stat-label">TOTAL MOVES</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="modal-captures">0</span>
+                    <span class="stat-label">UNITS CASUALTIES</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="modal-apm">0</span>
+                    <span class="stat-label">AVG APM</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="modal-duration">00:00</span>
+                    <span class="stat-label">MISSION TIME</span>
+                </div>
+            </div>
+
+            <div class="stat-detail-box">
+                <div class="detail-row">
+                    <span>LEAD OPERATOR:</span>
+                    <span id="modal-p1" class="highlight-cyan">WHITE</span>
+                </div>
+                <div class="detail-row">
+                    <span>DEFENSE OPERATOR:</span>
+                    <span id="modal-p2" class="highlight-magenta">BLACK</span>
+                </div>
+                <div class="detail-row">
+                    <span>CHRONO REWINDS:</span>
+                    <span id="modal-rewinds">0</span>
+                </div>
+                <div class="detail-row">
+                    <span>MATERIAL BALANCE:</span>
+                    <span id="modal-material">EVEN</span>
+                </div>
+            </div>
+
+            <div class="pgn-box">
+                <div class="pgn-header">
+                    <span>TACTICAL LOG (PGN RECORD)</span>
+                    <button class="pgn-copy-btn" onclick="copyPgnRecord()">COPY LOG</button>
+                </div>
+                <textarea id="pgn-textarea" readonly class="pgn-content"></textarea>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="start-btn" onclick="closeBattleReport()">RETURN TO COMBAT</button>
+        </div>
+    </div>
 </div>
 
 <script src="script.js"></script>
+
 </body>
 </html>
